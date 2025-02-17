@@ -7,7 +7,17 @@ export default function AudioRecorder() {
   const audioChunksRef = useRef<Blob[]>([]);
 
   const startRecording = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+    const displayMediaOptions: DisplayMediaStreamOptions = {
+      video: {
+        displaySurface: "browser",
+        echoCancellation: true,
+        noiseSuppression: true
+      },
+      audio: true
+    };
+
+    const stream = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
     const mediaRecorder = new MediaRecorder(stream);
     
     mediaRecorder.ondataavailable = (event) => {
@@ -18,7 +28,8 @@ export default function AudioRecorder() {
 
     mediaRecorder.onstop = () => {
       const audioBlob = new Blob(audioChunksRef.current, { type: "audio/wav" });
-      console.log("Audio recorded:", audioBlob);
+      const audioBlobURL = window.URL.createObjectURL(audioBlob);
+      console.log("Audio recorded:", audioBlob, audioBlobURL);
       stream.getTracks().forEach(function(track) {
         track.stop();
       });
