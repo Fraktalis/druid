@@ -1,6 +1,5 @@
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button"; // ShadCN button
-import * as React from "react";
 
 export default function AudioRecorder() {
   const [recording, setRecording] = useState(false);
@@ -20,6 +19,9 @@ export default function AudioRecorder() {
     mediaRecorder.onstop = () => {
       const audioBlob = new Blob(audioChunksRef.current, { type: "audio/wav" });
       console.log("Audio recorded:", audioBlob);
+      stream.getTracks().forEach(function(track) {
+        track.stop();
+      });
     };
 
     mediaRecorderRef.current = mediaRecorder;
