@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "ES2022",
+    "jsx": "react",
+    "strict": true,
+    "paths": {
+      "@/*": ["./*"]
+    }
+  }
+}
